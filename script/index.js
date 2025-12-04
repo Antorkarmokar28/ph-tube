@@ -8,7 +8,18 @@ function loadCategories() {
 const loadVideos = () => {
   fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
     .then((res) => res.json())
-    .then((data) => displayVideos(data.videos));
+    .then((data) => {
+      displayVideos(data.videos);
+      removeActiveClass();
+      document.getElementById("btn-all").classList.add("active");
+    });
+};
+
+const removeActiveClass = () => {
+  const activeClassButton = document.getElementsByClassName("active");
+  for (const activeButton of activeClassButton) {
+    activeButton.classList.remove("active");
+  }
 };
 
 const loadCategoryVideos = (id) => {
@@ -16,9 +27,10 @@ const loadCategoryVideos = (id) => {
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
-      displayVideos(data?.category);
+      removeActiveClass();
       const categoryButton = document.getElementById(`btn-${id}`);
       categoryButton.classList.add("active");
+      displayVideos(data?.category);
     });
 };
 
