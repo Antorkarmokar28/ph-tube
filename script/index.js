@@ -11,9 +11,17 @@ const loadVideos = () => {
     .then((data) => displayVideos(data.videos));
 };
 
+const loadCategoryVideos = (id) => {
+  const url = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => displayVideos(data?.category));
+};
+
 const displayVideos = (videos) => {
   // get videos container element
   const videosContainer = document.getElementById("videosContainer");
+  videosContainer.innerHTML = "";
   videos.forEach((video) => {
     // create element
     const videoCard = document.createElement("div");
@@ -39,23 +47,23 @@ const displayVideos = (videos) => {
                       class="ring-primary ring-offset-base-100 w-24 rounded-full ring-2 ring-offset-2"
                     >
                       <img
-                        src="https://img.daisyui.com/images/profile/demo/spiderperson@192.webp"
+                        src="${video?.authors[0]?.profile_picture}"
                       />
                     </div>
                   </div>
                 </div>
                 <!-- video info -->
                 <div class="info space-y-2">
-                  <h2 class="text-xl font-bold">Python full course for free</h2>
+                  <h2 class="text-lg font-semibold">${video?.title}</h2>
                   <p class="flex gap-4 items-center text-lg text-gray-400">
-                    Awlad hossain
+                    ${video?.authors[0]?.profile_name}
                     <img
                       class="w-8 h-8"
                       src="https://img.icons8.com/?size=48&id=2sZ0sdlG9kWP&format=png"
                       alt="verifyed_badge"
                     />
                   </p>
-                  <p class="text-lg text-gray-400">91k views</p>
+                  <p class="text-lg text-gray-400">${video?.others?.views}</p>
                 </div>
               </div>
             </div>
@@ -73,7 +81,7 @@ function displayCategories(categories) {
     // create element
     const containerDiv = document.createElement("div");
     containerDiv.innerHTML = `
-    <button class="btn hover:bg-[#FF1F3D] hover:text-white hover:font-bold">${category.category}</button>
+    <button onclick="loadCategoryVideos(${category?.category_id})" class="btn hover:bg-[#FF1F3D] hover:text-white hover:font-bold">${category?.category}</button>
     `;
     // add button on the categoryContainer
     categoryContainer.appendChild(containerDiv);
@@ -81,4 +89,3 @@ function displayCategories(categories) {
 }
 
 loadCategories();
-loadVideos();
