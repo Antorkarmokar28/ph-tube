@@ -102,17 +102,23 @@ const displayVideos = (videos) => {
                   <h2 class="text-lg font-semibold">${video?.title}</h2>
                   <p class="flex gap-4 items-center text-lg text-gray-400">
                     ${video?.authors[0]?.profile_name}
-                    <img
+                    ${
+                      video?.authors[0]?.verified
+                        ? `<img
                       class="w-8 h-8"
                       src="https://img.icons8.com/?size=48&id=2sZ0sdlG9kWP&format=png"
                       alt="verifyed_badge"
-                    />
+                    />`
+                        : ``
+                    }
                   </p>
                   <p class="text-lg text-gray-400">${video?.others?.views}</p>
                 </div>
               </div>
             </div>
-            <button onclick=loadVideoDetails('${video?.video_id}') class="btn btn-block">Show Details</button>
+            <button onclick=loadVideoDetails('${
+              video?.video_id
+            }') class="btn btn-block">Show Details</button>
         </div>
     `;
     videosContainer.appendChild(videoCard);
