@@ -5,8 +5,10 @@ function loadCategories() {
     .then((data) => displayCategories(data.categories));
 }
 
-const loadVideos = () => {
-  fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+const loadVideos = (searchText = "") => {
+  fetch(
+    `https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`
+  )
     .then((res) => res.json())
     .then((data) => {
       displayVideos(data.videos);
@@ -139,5 +141,10 @@ function displayCategories(categories) {
     categoryContainer.appendChild(containerDiv);
   }
 }
+
+document.getElementById("search-input").addEventListener("keyup", (e) => {
+  const searchValue = e.target.value;
+  loadVideos(searchValue);
+});
 
 loadCategories();
